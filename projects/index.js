@@ -116,14 +116,14 @@ app
     const user = users.find((user) => user.id === id);
     return res.json(user);
   })
-  .put((req, res) => {
-    return res.json({ status: "pending" });
-  })
-  .delete((req, res) => {
-    // TODO: delete the user with id
-    return res.json({ status: "Pending" });
-  });
+  // .put((req, res) => {
+  //   return res.json({ status: "pending" });
+  // })
+  // .delete((req, res) => {
+  //   // TODO: delete the user with id
+  //   return res.json({ status: "Pending" });
+  // });
 
-app.listen(process.env.PORT, () =>
-  console.log(`Server Started at the Port: ${PORT}`),
+app.listen(process.env.PORT || 4001, () =>
+  console.log(`Server Started at the Port: ${process.env.PORT || 4001}`),
 );
