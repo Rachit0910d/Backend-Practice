@@ -4,3 +4,8 @@
 1771943724409: PATCH: /api/users/1001 
 1771943816335: PATCH: ::1: /api/users/1001 
 1771943832669: GET: ::1: /api/users/1001 
+1771944365221: GET: ::1: /api/users 
+1771944556292: GET: ::1: /api/users 
+1771944605064: GET: ::1: /api/users 
+1771944669033: GET: ::1: /api/users 
+1771944830136: GET: ::1: /api/users 

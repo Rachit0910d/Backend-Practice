@@ -17,7 +17,7 @@ app.use((req, res, next) => {
     "./logs.txt",
     `${Date.now()}: ${req.method}: ${req.ip}: ${req.path} \n`,
     (err, data) => {
-      if(err) throw err;
+      if (err) throw err;
       console.log(data);
       next();
     },
@@ -48,7 +48,21 @@ app.get("/users", (req, res) => {
 
 // GET /api/users - List all users
 app.get("/api/users", (req, res) => {
-  return res.json(users);
+  const body = req.body; // Request Body
+  if ( // Validation for required fields
+    // if any of the required fields are missing in the request body, return a 400 Bad Request response with an error message
+    !body.first_name || 
+    !body.last_name ||
+    !body.email ||
+    !body.gender ||
+    !body.job_title
+  ) {
+    return res.status(400).json({ msg: "All field are required" }); // 400 Bad Request
+  } else {
+    res.setHeader("X-MyName", "Rachit Saini"); // Custom Header -> add X to custom headers
+    console.log(req.headers); // Request Headers
+    return res.json(users);
+  }
 });
 
 // GET /api/users/1 - get the user with id 1
@@ -79,7 +93,7 @@ app.post("/api/users", (req, res) => {
   fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
     if (err) throw err;
 
-    return res.json({ status: "success", id: users.length });
+    return res.status(201).json({ status: "success", id: users.length });
   });
 });
 
