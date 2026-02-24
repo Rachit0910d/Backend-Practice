@@ -49,9 +49,10 @@ app.get("/users", (req, res) => {
 // GET /api/users - List all users
 app.get("/api/users", (req, res) => {
   const body = req.body; // Request Body
-  if ( // Validation for required fields
+  if (
+    // Validation for required fields
     // if any of the required fields are missing in the request body, return a 400 Bad Request response with an error message
-    !body.first_name || 
+    !body.first_name ||
     !body.last_name ||
     !body.email ||
     !body.gender ||
@@ -71,6 +72,9 @@ app.get("/api/users", (req, res) => {
 app.get("/api/users/:id", (req, res) => {
   const id = Number(req.params.id);
   const user = users.find((user) => user.id === id);
+  if (!user) {
+    return res.status(400).json({ msg: "Invalid Id number" });
+  }
   return res.json(user);
 });
 
