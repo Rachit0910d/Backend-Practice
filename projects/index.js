@@ -1,10 +1,35 @@
-require("dotenv").config();
 const express = require("express");
+const mongoose = require("mongoose");
 const users = require("./MOCK_DATA.json");
 const fs = require("fs");
 
 const app = express();
 const PORT = 8001;
+
+//Schema for MongoDB
+
+const userSchema = new mongoose.Schema({ // Schema defines the structure of the documents in a MongoDB collection
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  jobTitle: {
+    type: String,
+  },
+  gender: {
+    type: String,
+  },
+});
+// Model is a wrapper for the schema and provides an interface to interact with the database
+const User = mongoose.model("User", userSchema); // Model for MongoDB
 
 // Middleware-plugins that run before the request is processed by the route handler
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
