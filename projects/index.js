@@ -58,30 +58,54 @@ app.post("/api/users", (req, res) => {
   });
 });
 
-// PATCH /api/users/1 - edit the user with id 1
+// PATCH /api/users/:id - edit the user with id 1
 app.patch("/api/users/:id", (req, res) => {
-  // TODO: update user detail with id
   const userId = Number(req.params.id);
   const updates = req.body;
 
-  const user = users.find((u) => u.id === userId);
+  const userIndex = users.findIndex((user) => user.id === userId);
 
-  if (!user) {
+  if (userIndex === -1) {
     return res.status(404).json({ message: "User not found" });
   }
 
-  Object.keys(updates).forEach((key) => {
-    if (user.hasOwnProperty(key)) {
-      user[key] = updates[key];
-    }
-  });
+  // Update only provided fields
+  users[userIndex] = {
+    ...users[userIndex],
+    ...updates,
+  };
 
-  return res.json({ message: "user updateed successfully", user });
+  fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err) => {
+    if (err) throw err;
+
+    return res.json({
+      status: "User updated successfully",
+      user: users[userIndex],
+    });
+  });
 });
 
-// DELETE /api/user/1 - delete the user with id 1
+// DELETE /api/users/1 - delete the user with id 1
 app.delete("/api/users/:id", (req, res) => {
+  const userId = Number(req.params.id);
 
+  const userIndex = users.findIndex((user) => user.id === userId);
+
+  if (userIndex === -1) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  // Remove user
+  const deletedUser = users.splice(userIndex, 1);
+
+  fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err) => {
+    if (err) throw err;
+
+    return res.json({
+      status: "User deleted successfully",
+      deletedUser,
+    });
+  });
 });
 
 // grouping for those who have the same path ie: /api/users/:id
@@ -100,4 +124,6 @@ app
     return res.json({ status: "Pending" });
   });
 
-app.listen(process.env.PORT, () => console.log(`Server Started at the Port: ${PORT}`));
+app.listen(process.env.PORT, () =>
+  console.log(`Server Started at the Port: ${PORT}`),
+);
