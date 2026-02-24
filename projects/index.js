@@ -9,6 +9,31 @@ const PORT = 8001;
 // Middleware-plugins that run before the request is processed by the route handler
 app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
 
+app.use((req, res, next) => {
+  // console.log("Middleware 1");
+  // req.myUserName = "Rachit saini";
+
+  fs.appendFile(
+    "./logs.txt",
+    `${Date.now()}: ${req.method}: ${req.ip}: ${req.path} \n`,
+    (err, data) => {
+      if(err) throw err;
+      console.log(data);
+      next();
+    },
+  );
+  // return res.json({msg: "Middleware 1"});
+});
+
+// app.use((req,res,next) =>{
+//   console.log("Middleware 2", req.myUserName);
+//   // db queries
+//   // credit card info
+//   req.creditCardNummber = "0397001700050929"; // this credit card number can be accessed in the route handler as req.creditCardNummber
+//   // return res.end("Middleware 2");
+//   next();
+// })
+
 //Routes
 app.get("/users", (req, res) => {
   const html = `
@@ -109,20 +134,18 @@ app.delete("/api/users/:id", (req, res) => {
 });
 
 // grouping for those who have the same path ie: /api/users/:id
-app
-  .route("/api/users/:id")
-  .get((req, res) => {
-    const id = Number(req.params.id);
-    const user = users.find((user) => user.id === id);
-    return res.json(user);
-  })
-  // .put((req, res) => {
-  //   return res.json({ status: "pending" });
-  // })
-  // .delete((req, res) => {
-  //   // TODO: delete the user with id
-  //   return res.json({ status: "Pending" });
-  // });
+app.route("/api/users/:id").get((req, res) => {
+  const id = Number(req.params.id);
+  const user = users.find((user) => user.id === id);
+  return res.json(user);
+});
+// .put((req, res) => {
+//   return res.json({ status: "pending" });
+// })
+// .delete((req, res) => {
+//   // TODO: delete the user with id
+//   return res.json({ status: "Pending" });
+// });
 
 app.listen(process.env.PORT || 4001, () =>
   console.log(`Server Started at the Port: ${process.env.PORT || 4001}`),

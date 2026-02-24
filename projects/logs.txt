@@ -1,0 +1,6 @@
+1771943576961: GET: /api/users/
+31771943625295: GET: /api/users/1001 
+1771943687945: POST: /api/users 
+1771943724409: PATCH: /api/users/1001 
+1771943816335: PATCH: ::1: /api/users/1001 
+1771943832669: GET: ::1: /api/users/1001 
