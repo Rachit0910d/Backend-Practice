@@ -191,5 +191,5 @@ app.route("/api/users/:id").get((req, res) => {
 // });
 
 app.listen(process.env.PORT || 4001, () =>
-  console.log(`Server Started at the Port: ${process.env.PORT || 4001}`),
+  console.log(`Server Started at the Port http://localHost:${process.env.PORT || 4001}`),
 );
