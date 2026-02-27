@@ -8,7 +8,8 @@ const PORT = 8001;
 
 //Schema for MongoDB
 
-const userSchema = new mongoose.Schema({ // Schema defines the structure of the documents in a MongoDB collection
+const userSchema = new mongoose.Schema({
+  // Schema defines the structure of the documents in a MongoDB collection
   firstName: {
     type: String,
     required: true,
@@ -121,7 +122,6 @@ app.post("/api/users", (req, res) => {
   users.push({ ...body, id: users.length + 1 });
   fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
     if (err) throw err;
-
     return res.status(201).json({ status: "success", id: users.length });
   });
 });
